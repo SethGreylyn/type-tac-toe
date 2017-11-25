@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import './index.css';
 
 interface SquareProps {
-    value: Player;
+    value: Square;
     onClick: () => void;
 }
 
@@ -56,8 +56,9 @@ class Board extends React.Component<BoardProps, BoardState> {
     }
 }
 
-type Player = 'X' | 'O' | null;
-type Squares = Player[];
+type Player = 'X' | 'O';
+type Square = (Player | null);
+type Squares = Square[];
 
 interface GameProps {
 }
@@ -65,7 +66,7 @@ interface GameProps {
 interface GameState {
     squares: Squares;
     player: Player;
-    history: [{ squares: Squares}];
+    history: { squares: Squares}[];
     stepNumber: number;
 }
 
@@ -84,16 +85,17 @@ class Game extends React.Component<GameProps, GameState> {
     }
     squareClick(i: number) {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
-        const squares = history[history.length - 1];
+        const current = history[history.length - 1];
+        const squares = current.squares.slice();
+        const player: Player = this.state.player.slice() as Player;
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
-        squares[i] = this.state.player;
-        const nextPlayer = this.state.player === 'X' ? 'O' : 'X';
+        squares[i] = player;
+        const nextPlayer = player === 'X' ? 'O' : 'X';
 
-        console.log(squares);
         this.setState({
-            history: history.concat(squares),
+            history: history.concat({squares}),
             squares,
             player: nextPlayer,
             stepNumber: history.length
@@ -109,7 +111,7 @@ class Game extends React.Component<GameProps, GameState> {
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
-        const winner = calculateWinner(this.state.squares);
+        const winner = calculateWinner(current.squares);
 
         const moves = history.map((step, move) => {
             const desc = move ?
@@ -133,7 +135,7 @@ class Game extends React.Component<GameProps, GameState> {
             <div className="game-board">
                 <Board
                     player={this.state.player}
-                    squares={current}
+                    squares={current.squares}
                     onClick={(i: number) => this.squareClick(i)}
                 />
             </div>
@@ -146,7 +148,7 @@ class Game extends React.Component<GameProps, GameState> {
     }
 }
 
-function calculateWinner(squares: Player[]) {
+function calculateWinner(squares: Squares) {
     const lines = [
         [0, 1, 2],
         [3, 4, 5],
