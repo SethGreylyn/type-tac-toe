@@ -12,4 +12,4 @@ TODO:
 
 -When someone wins, highlight the three squares that caused the win.
 
--Integrate Redux.
+-Integrate Redux?
