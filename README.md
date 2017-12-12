@@ -1,4 +1,4 @@
-This a learning exercise to make the standard React [tic-tac-toe](https://reactjs.org/tutorial/tutorial.html) tutorial into a TypeScript project. It was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+This is a learning exercise to make the standard React [tic-tac-toe](https://reactjs.org/tutorial/tutorial.html) tutorial into a TypeScript project. It was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 TODO:
 
